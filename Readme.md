@@ -5,4 +5,4 @@ Atividade do boliche. Muito foda, na mora, adoro boliche com haskell, nada mais 
 Mal consigo esperar o que mais essa linguagem da pesada tem a oferecer em.
 
 # Atenção
-Não desenvolver na branch Main, sujeito a *PAULADA*.
+Não desenvolver na branch Main, sujeito a *PAULADA*. (MENTIRA)
