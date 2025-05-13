@@ -1,5 +1,5 @@
 -- Augusto Fernandes Ildefonso 15441810
--- Marco
+-- Marco Túlio Mello Silva - 12548657
 -- Lucas Lombardi de Castro
 main :: IO ()
 main = do
