@@ -1,3 +1,6 @@
+-- Augusto Fernandes Ildefonso 15441810
+-- Marco
+-- Lucas Lombardi de Castro
 main :: IO ()
 main = do
     la <- getLine
@@ -5,7 +8,7 @@ main = do
     let frames = tuplas a                           --Criando a lista com as tuplas dos frmaes
     let (primeiros9, restante) = splitAt 9 frames   --Seperando os 9 primeiros frames do ultimo frame
 
-    putStrLn $ printPlacarTuplasDefault primeiros9 ++ printUltimoFrame restante ++ " " ++ show (soma frames)
+    putStrLn $ printPlacarTuplasDefault primeiros9 ++ printUltimoFrame restante ++ " " ++ show (somaPontuacoes a)
 
 tuplas :: [Int] -> [(Int, Int)]
 tuplas [] = []
@@ -14,23 +17,16 @@ tuplas (x : y : xs)
     | x == 10 = (10, 0) : tuplas (y : xs)
     | otherwise = (x, y) : tuplas xs
 
-soma :: [(Int, Int)] -> Int
-soma [] = 0
-soma [(a, b)] 
-  | a /= 10 = a + b
-  | otherwise = 0
-soma ((a, b) : (c, d) : []) 
-  | a /= 10 && a + b < 10 = a + b
-  | a /= 10 && a + b == 10 = a + b + c
-  | a == 10 && c /= 10 = a + c + d
-  | a == 10 && c == 10 = a + c
-  | otherwise = 0
-soma ((a, b) : (c, d) : (e, f) : xs)
-  | a /= 10 && a + b < 10 = a + b + soma ((c, d) : (e, f) : xs)
-  | a /= 10 && a + b == 10 = a + b + c + soma ((c, d) : (e, f): xs)
-  | a == 10 && c /= 10 = a + c + d + soma ((c, d) : (e, f): xs)
-  | a == 10 && c == 10 = a + c + e + soma ((c, d) : (e, f) : xs)
-  | otherwise = soma ((c, d) : (e, f) : xs)
+somaPontuacoes :: [Int] -> Int
+somaPontuacoes rolagens = somaAux rolagens 0 1
+  where
+    somaAux _ pontuacao 11 = pontuacao -- Quando tem 10 frames completos
+    somaAux (10:xs) pontuacao frame = somaAux xs (pontuacao + 10 + bonus) (frame + 1)
+      where bonus = sum $ take 2 xs
+    somaAux (a:b:xs) pontuacao frame
+      | a + b == 10 = somaAux xs (pontuacao+ 10 + head xs) (frame + 1) -- Caso seja spare
+      | otherwise   = somaAux xs (pontuacao + a + b) (frame + 1)
+    somaAux _ pontucao _ = pontucao
 
 
 printUltimoFrame :: [(Int, Int)] -> String
