@@ -1,6 +1,6 @@
 -- Augusto Fernandes Ildefonso 15441810
 -- Marco Túlio Mello Silva - 12548657
--- Lucas Lombardi de Castro
+-- Lucas Lombardi Castro - 13672978 
 main :: IO ()
 main = do
     la <- getLine
