@@ -8,7 +8,7 @@ main = do
     let frames = tuplas a                           --Criando a lista com as tuplas dos frmaes
     let (primeiros9, restante) = splitAt 9 frames   --Seperando os 9 primeiros frames do ultimo frame
 
-    putStrLn $ printPlacarTuplasDefault primeiros9 ++ printUltimoFrame restante ++ " " ++ show (somaPontuacoes a)
+    putStrLn $ printPlacarTuplasDefault primeiros9 ++ printUltimoFrame restante ++ " " ++ show (soma a)
 
 tuplas :: [Int] -> [(Int, Int)]
 tuplas [] = []
@@ -17,8 +17,8 @@ tuplas (x : y : xs)
     | x == 10 = (10, 0) : tuplas (y : xs)
     | otherwise = (x, y) : tuplas xs
 
-somaPontuacoes :: [Int] -> Int
-somaPontuacoes rolagens = somaAux rolagens 0 1
+soma :: [Int] -> Int
+soma rolagens = somaAux rolagens 0 1
   where
     somaAux _ pontuacao 11 = pontuacao -- Quando tem 10 frames completos
     somaAux (10:xs) pontuacao frame = somaAux xs (pontuacao + 10 + bonus) (frame + 1)
