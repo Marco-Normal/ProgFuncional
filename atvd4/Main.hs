@@ -24,7 +24,7 @@ soma rolagens = somaAux rolagens 0 1
     somaAux (10:xs) pontuacao frame = somaAux xs (pontuacao + 10 + bonus) (frame + 1)
       where bonus = sum $ take 2 xs
     somaAux (a:b:xs) pontuacao frame
-      | a + b == 10 = somaAux xs (pontuacao+ 10 + head xs) (frame + 1) -- Caso seja spare
+      | a + b == 10 = somaAux xs (pontuacao + 10 + head xs) (frame + 1) -- Caso seja spare
       | otherwise   = somaAux xs (pontuacao + a + b) (frame + 1)
     somaAux _ pontucao _ = pontucao
 
