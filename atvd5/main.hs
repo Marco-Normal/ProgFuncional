@@ -1,6 +1,8 @@
 import qualified Text.CSV as CSV
 import Text.Read (readMaybe) --Will help us reading the CSV File and Parsing to int the strings
 import Data.Maybe
+import Data.List
+import Data.Ord
 
 
 data PandemicData = PandemicData { --Declaring the object
@@ -28,12 +30,12 @@ main = do
     la <- getLine --Gettint all the line (Impute Function)
     let n1 = read la --Read is converting to a number (Pure function)
     
-    --lb <- getLine     
-    --let n2 = read lb
-    --lc <- getLine 
-    --let n3 = read lc 
-    --ld <- getLine       
-    --let n4 = read ld
+    lb <- getLine     
+    let n2 = read lb
+    lc <- getLine 
+    let n3 = read lc 
+    ld <- getLine       
+    let n4 = read ld
 
     --Reading and saving the records
     Right csv <- CSV.parseCSVFromFile "dados.csv"
@@ -41,5 +43,6 @@ main = do
     --First Answer
     putStrLn $ show $ sum $ map active $ filter ((>n1).confirmed) pandemicData
     --Second Answer
-    --putStrLn $ show $ sum $ map deaths $ take 3 $ sortBy $ filter ((>8724).confirmed) pandemicData
+    putStrLn $ show $ sum $ map deaths $ take n3 $ sortBy (comparing confirmed) $ take n2 $ sortBy (flip (comparing active)) pandemicData
     --Third Answer
+    putStrLn $ show $ sort $ map country $ take n4 $ sortBy (flip (comparing confirmed)) pandemicData
