@@ -1,3 +1,4 @@
+--Funcionando com o modulo Text.CSV
 import qualified Text.CSV as CSV
 import Text.Read (readMaybe) --Will help us reading the CSV File and Parsing to int the strings
 import Data.Maybe
