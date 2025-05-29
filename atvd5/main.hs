@@ -1,5 +1,7 @@
 
+-- Augusto Fernandes Ildefonso (15441810)
 import Data.List
+import Data.Ord
 import System.IO
 data PandemicData = PandemicData { --Declaring the object
     country :: [Char],
@@ -12,15 +14,14 @@ data PandemicData = PandemicData { --Declaring the object
 
 main :: IO()
 main = do
-    la <- getLine --Gettint all the line (Impute Function)
-    let n1 = read la --Read is converting to a number (Pure function)
+    la <- getLine --Gettint all the line (Impute Function)    
     
-    lb <- getLine     
-    let n2 = read lb
-    lc <- getLine 
-    let n3 = read lc 
-    ld <- getLine       
-    let n4 = read ld
+    let [a, b, c, d] = words la -- Criando variável
+        n1 = read a :: Integer
+        n2 = read b :: Int
+        n3 = read c :: Int
+        n4 = read d :: Int
+
     handle <- openFile "dados.csv" ReadMode
     contents <- hGetContents handle
     let line = lines contents
@@ -30,9 +31,7 @@ main = do
     --Second Answer
     putStrLn $ show $ sum $ map deaths $ take n3 $ sortBy (comparing confirmed) $ take n2 $ sortBy (flip (comparing active)) pandemicData
     --Third Answer
-    putStrLn $ show $ sort $ map country $ take n4 $ sortBy (flip (comparing confirmed)) pandemicData
-
-
+    impressao $ sort $ map country $ take n4 $ sortBy (flip (comparing confirmed)) pandemicData
 
 
 -- https://stackoverflow.com/questions/4503958/what-is-the-best-way-to-split-a-string-by-a-delimiter-functionally
@@ -63,3 +62,9 @@ csvSplit s =
                 }
         _ -> error "Impossivel"
 
+impressao [] = return()
+impressao (x:xs)
+    | x /= "" = do
+        putStrLn x
+        impressao xs
+    | otherwise = impressao xs
