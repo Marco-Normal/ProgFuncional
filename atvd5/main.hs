@@ -1,11 +1,6 @@
---Funcionando com o modulo Text.CSV
-import qualified Text.CSV as CSV
-import Text.Read (readMaybe) --Will help us reading the CSV File and Parsing to int the strings
-import Data.Maybe
+
 import Data.List
-import Data.Ord
-
-
+import System.IO
 data PandemicData = PandemicData { --Declaring the object
     country :: [Char],
     confirmed :: Integer,
@@ -14,17 +9,6 @@ data PandemicData = PandemicData { --Declaring the object
     active :: Integer
     } deriving (Show, Read, Eq)
 
---Taking a Record (list of strings in a CSV) and returning maybe a object pandemicData
-parseRecord :: CSV.Record -> Maybe PandemicData 
-parseRecord [country, confirmedStr, deathsStr, recoveryStr, activeStr] = do --We still need to convert the necessary Strings to Int
-     --Converting the necessaries String to String with readMaybe (to handle problematic cases)
-    confirmed <- readMaybe confirmedStr
-    deaths <- readMaybe deathsStr
-    recovery <- readMaybe recoveryStr
-    active <- readMaybe activeStr
-
-    Just $ PandemicData country confirmed deaths recovery active --Constructing a pandemicData if everything was right
-parseRecord _ = Nothing --If one maybe returned nothing, the parseRecord will return nothing 
 
 main :: IO()
 main = do
@@ -37,13 +21,45 @@ main = do
     let n3 = read lc 
     ld <- getLine       
     let n4 = read ld
-
-    --Reading and saving the records
-    Right csv <- CSV.parseCSVFromFile "dados.csv"
-    let pandemicData = [p | Just p <- map parseRecord csv]  --For each row in CSV, applie parseRecord. Than, include in a list comprehension
+    handle <- openFile "dados.csv" ReadMode
+    contents <- hGetContents handle
+    let line = lines contents
+    let pandemicData = map csvSplit line
     --First Answer
     putStrLn $ show $ sum $ map active $ filter ((>n1).confirmed) pandemicData
     --Second Answer
     putStrLn $ show $ sum $ map deaths $ take n3 $ sortBy (comparing confirmed) $ take n2 $ sortBy (flip (comparing active)) pandemicData
     --Third Answer
     putStrLn $ show $ sort $ map country $ take n4 $ sortBy (flip (comparing confirmed)) pandemicData
+
+
+
+
+-- https://stackoverflow.com/questions/4503958/what-is-the-best-way-to-split-a-string-by-a-delimiter-functionally
+-- Stack overflow de 14 anos atrás. Esse é o sentido da vida honestamente.
+-- Nossas strings vão sair na forma
+-- [",a,b,c", ",b,c" ",c"]
+-- Vamos pegar a cauda
+-- ["a,b,c", "b,c", "c"]
+-- Vamos pegar enquanto for diferente de delim
+-- ["a", "b", "c"]
+splitOn :: Char -> String -> [String]
+splitOn _ "" = []
+splitOn delimiter list =
+  map (takeWhile (/= delimiter) . tail) -- pegue enquanto for diferente do delimitador.
+    (filter (isPrefixOf [delimiter]) -- Pegamos aquela que tem o delimitador como primeiro elemento
+      (tails -- Retorna a cauda
+           (delimiter : list))) -- Adiciona um delimitador para conseguirmos o primeiro elemento
+csvSplit :: String -> PandemicData
+csvSplit s =
+    case splitOn ',' s of
+        [n, c, d, r, a] ->
+            PandemicData
+                { country = n
+                , confirmed = read c
+                , deaths = read d
+                , recovery = read r
+                , active = read a
+                }
+        _ -> error "Impossivel"
+
