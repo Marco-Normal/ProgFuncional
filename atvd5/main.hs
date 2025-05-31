@@ -1,5 +1,7 @@
+-- Augusto Fernandes Ildefonso - 15441810
+-- Marco Túlio Mello Silva - 12548657
+-- Lucas Lombardi Castro - 13672978 
 
--- Augusto Fernandes Ildefonso (15441810)
 import Data.List
 import Data.Ord
 import System.IO
