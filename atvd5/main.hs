@@ -36,8 +36,6 @@ main = do
     impressao $ sort $ map country $ take n4 $ sortBy (flip (comparing confirmed)) pandemicData
 
 
--- https://stackoverflow.com/questions/4503958/what-is-the-best-way-to-split-a-string-by-a-delimiter-functionally
--- Stack overflow de 14 anos atrás. Esse é o sentido da vida honestamente.
 -- Nossas strings vão sair na forma
 -- [",a,b,c", ",b,c" ",c"]
 -- Vamos pegar a cauda
