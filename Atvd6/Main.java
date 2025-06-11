@@ -1,3 +1,5 @@
+// Augusto Fernandes Ildefonso - 15441810
+// Lucas Lombardi Castro - 13672978
 // Marco Túlio Mello Silva - 12548657
 
 import java.nio.file.Files;
